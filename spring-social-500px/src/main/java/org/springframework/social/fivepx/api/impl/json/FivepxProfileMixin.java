@@ -1,4 +1,4 @@
-package org.springframework.social.fivepx.api.impl;
+package org.springframework.social.fivepx.api.impl.json;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.DeserializationContext;
 import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.springframework.social.fivepx.api.FivepxProfile;
-import org.springframework.social.fivepx.api.impl.FivepxProfileMixin.FivepxProfileDeserializer;
+import org.springframework.social.fivepx.api.impl.json.FivepxProfileMixin.FivepxProfileDeserializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize(using = FivepxProfileDeserializer.class)
