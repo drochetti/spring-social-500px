@@ -2,18 +2,15 @@ package org.springframework.social.fivepx.api.impl;
 
 import org.springframework.social.fivepx.api.FivepxProfile;
 import org.springframework.social.fivepx.api.UserOperations;
-import org.springframework.web.client.RestTemplate;
 
 public class UserTemplate extends AbstractFivepxOperations implements UserOperations {
-	private final RestTemplate restTemplate;
 
-	public UserTemplate(RestTemplate restTemplate, boolean isAuthorizedForUser) {
-		super(isAuthorizedForUser);
-		this.restTemplate = restTemplate;
+	public UserTemplate(final FivepxTemplate fivepxTemplate) {
+		super(fivepxTemplate);
 	}
 
 	@Override
-	public long getProfileId() {
+	public Long getProfileId() {
 		requireAuthorization();
 		return getUserProfile().getId();
 	}
@@ -27,23 +24,29 @@ public class UserTemplate extends AbstractFivepxOperations implements UserOperat
 	@Override
 	public FivepxProfile getUserProfile() {
 		requireAuthorization();
-		return restTemplate.getForObject(buildUri("users"), FivepxProfile.class);
+		return getRestTemplate().getForObject(buildUri("users"), FivepxProfile.class);
 	}
 
 	@Override
 	public FivepxProfile getUserProfileWithEmail(String email) {
-		return restTemplate.getForObject(buildUri("users/show", "email", email), FivepxProfile.class);
+		return getRestTemplate().getForObject(buildUri("show", params("email", email)), FivepxProfile.class);
 
 	}
 
 	@Override
 	public FivepxProfile getUserProfileWithUsername(String userName) {
-		return restTemplate.getForObject(buildUri("users/show", "username", userName), FivepxProfile.class);
+		return getRestTemplate().getForObject(buildUri("show", params("username", userName)), FivepxProfile.class);
 
 	}
 
 	@Override
-	public FivepxProfile getUserProfileWithId(long userId) {
-		return restTemplate.getForObject(buildUri("users/show", "id", String.valueOf(userId)), FivepxProfile.class);
+	public FivepxProfile getUserProfileWithId(Long userId) {
+		return getRestTemplate().getForObject(buildUri("show", params("id", userId)), FivepxProfile.class);
 	}
+
+	@Override
+	protected String getEndpointPath() {
+		return "users/";
+	}
+
 }

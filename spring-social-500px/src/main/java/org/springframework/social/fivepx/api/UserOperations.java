@@ -2,7 +2,7 @@ package org.springframework.social.fivepx.api;
 
 public interface UserOperations {
 
-	long getProfileId();
+	Long getProfileId();
 
 	String getScreenName();
 
@@ -12,5 +12,6 @@ public interface UserOperations {
 
 	FivepxProfile getUserProfileWithUsername(String userName);
 
-	FivepxProfile getUserProfileWithId(long userId);
+	FivepxProfile getUserProfileWithId(Long userId);
+
 }

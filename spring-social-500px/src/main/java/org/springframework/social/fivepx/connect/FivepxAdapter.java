@@ -13,7 +13,10 @@ public class FivepxAdapter implements ApiAdapter<Fivepx> {
 	@Override
 	public UserProfile fetchUserProfile(Fivepx fivepx) {
 		FivepxProfile profile = fivepx.userOperations().getUserProfile();
-		return new UserProfileBuilder().setName(profile.getName()).setUsername(profile.getName()).build();
+		return new UserProfileBuilder()
+				.setName(profile.getName())
+				.setUsername(profile.getUserName())
+				.build();
 	}
 
 	@Override
@@ -30,8 +33,7 @@ public class FivepxAdapter implements ApiAdapter<Fivepx> {
 		try {
 			fivepx.userOperations().getUserProfile();
 			return true;
-		}
-		catch (ApiException e) {
+		} catch (ApiException e) {
 			return false;
 		}
 	}
