@@ -1,15 +1,19 @@
 package org.springframework.social.fivepx.api.impl;
 
+import java.net.URI;
+
 import org.springframework.social.fivepx.api.OperationResult;
 import org.springframework.social.fivepx.api.Photo;
-import org.springframework.social.fivepx.api.PhotoImageSize;
+import org.springframework.social.fivepx.api.PhotoFilter;
 import org.springframework.social.fivepx.api.PhotoOperations;
 import org.springframework.social.fivepx.api.PhotoResult;
+import org.springframework.social.fivepx.api.PhotoSearchFilter;
 import org.springframework.social.fivepx.api.PhotoSearchResult;
-import org.springframework.social.fivepx.api.PhotoSearchResult.Sort;
 import org.springframework.social.fivepx.api.PhotoStream;
+import org.springframework.social.fivepx.api.PhotoStreamFilter;
 import org.springframework.social.fivepx.api.PhotoStreamResult;
-import org.springframework.social.fivepx.api.UserStream;
+import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -23,83 +27,49 @@ public class PhotoTemplate extends AbstractFivepxOperations implements PhotoOper
 
 	@Override
 	public Photo getPhoto(Long photoId) {
-		return getPhoto(photoId, null, null, null, null).getPhoto();
+		return getPhoto(photoId, null).getPhoto();
 	}
-
+	
 	@Override
-	public Photo getPhoto(Long photoId, PhotoImageSize imageSize) {
-		return getPhoto(photoId, null, null, null, imageSize).getPhoto();
-	}
-
-	@Override
-	public PhotoResult getPhoto(Long photoId, Boolean comments, Integer commentsPage,
-			Boolean tags, PhotoImageSize imageSize) {
-		MultiValueMap<String, String> params = params(
-				"comments", comments,
-				"comments_page", commentsPage,
-				"tags", tags,
-				"image_size", imageSize != null ? imageSize.getId() : null);
-		return getRestTemplate().getForObject(buildUri("{id}", params, urlVariables("id", photoId)), PhotoResult.class);
+	public PhotoResult getPhoto(Long photoId, PhotoFilter filter) {
+		Assert.notNull(photoId);
+		MultiValueMap<String, String> params = filter == null
+				? new LinkedMultiValueMap<String, String>()
+				: filter.toParams();
+		final URI uri = buildUri("{id}", params, urlVariables("id", photoId));
+		return getRestTemplate().getForObject(uri, PhotoResult.class);
 	}
 
 	@Override
 	public PhotoStreamResult getPhotos() {
-		// TODO Auto-generated method stub
-		return null;
+		return getPhotos(PhotoStreamFilter.by(PhotoStream.FRESH_TODAY));
 	}
 
 	@Override
-	public PhotoStreamResult getPhotos(PhotoStream stream) {
-		// TODO Auto-generated method stub
-		return null;
+	public PhotoStreamResult getPhotos(PhotoStreamFilter filter) {
+		Assert.notNull(filter);
+		return getRestTemplate().getForObject(buildUri(filter.toParams()), PhotoStreamResult.class);
 	}
 
 	@Override
-	public PhotoStreamResult getPhotos(UserStream stream, Long userId,
-			String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PhotoStreamResult getPhotos(PhotoStream stream, Sort sort,
-			Integer page, Integer resultsToReturn, Boolean includeStore,
-			Boolean includeState, Boolean tags, PhotoImageSize... imageSizes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PhotoStreamResult getPhotos(UserStream stream, Long userId,
-			String username, Sort sort, Integer page, Integer resultsToReturn,
-			Boolean includeStore, Boolean includeState, Boolean tags,
-			PhotoImageSize... imageSizes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PhotoSearchResult searchByKeywords(String term) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PhotoSearchResult searchByTag(String tag) {
-		// TODO Auto-generated method stub
-		return null;
+	public PhotoSearchResult search(PhotoSearchFilter filter) {
+		Assert.notNull(filter);
+		return getRestTemplate().getForObject(buildUri("search", filter.toParams()), PhotoSearchResult.class);
 	}
 
 	@Override
 	public OperationResult addToFavorites(Long photoId) {
-		// TODO Auto-generated method stub
-		return null;
+		requireAuthorization();
+		return getRestTemplate().postForObject(buildUri("{id}/favorite", urlVariables("id", photoId)),
+				null, OperationResult.class);
 	}
 
 	@Override
 	public OperationResult removeFromFavorites(Long photoId) {
-		// TODO Auto-generated method stub
-		return null;
+		requireAuthorization();
+		return getRestTemplate().postForObject(
+				buildUri("{id}/favorite", params("_method", "delete"), urlVariables("id", photoId)),
+				null, OperationResult.class);
 	}
 
 	@Override

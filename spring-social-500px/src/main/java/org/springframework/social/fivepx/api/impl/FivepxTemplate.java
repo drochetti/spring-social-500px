@@ -1,10 +1,5 @@
 package org.springframework.social.fivepx.api.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -16,7 +11,7 @@ import org.springframework.social.fivepx.api.Fivepx;
 import org.springframework.social.fivepx.api.PhotoOperations;
 import org.springframework.social.fivepx.api.UploadOperations;
 import org.springframework.social.fivepx.api.UserOperations;
-import org.springframework.social.fivepx.api.impl.json.FivepxModule;
+import org.springframework.social.fivepx.api.json.FivepxModule;
 import org.springframework.social.oauth1.AbstractOAuth1ApiBinding;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -88,18 +83,6 @@ public class FivepxTemplate extends AbstractOAuth1ApiBinding implements Fivepx {
 			builder.queryParam("consumer_key", getConsumerKey());
 		}
 		return builder;
-	}
-
-	@Deprecated
-	public static String toString(final InputStream stream) throws IOException {
-		InputStreamReader input = new InputStreamReader(stream);
-		StringWriter w = new StringWriter();
-        char[] buffer = new char[4096];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            w.write(buffer, 0, n);
-        }
-		return w.toString();
 	}
 
 }

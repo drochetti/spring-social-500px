@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.social.MissingAuthorizationException;
+import org.springframework.social.fivepx.api.util.ApiUriUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +23,14 @@ public class AbstractFivepxOperations {
 		if (!fivepxTemplate.isAuthorized()) {
 			throw new MissingAuthorizationException();
 		}
+	}
+	
+	protected URI buildUri() {
+		return buildUri("", EMPTY_PARAMETERS, EMPTY_URI_VARIABLES);
+	}
+	
+	protected URI buildUri(MultiValueMap<String, String> parameters) {
+		return buildUri("", parameters, EMPTY_URI_VARIABLES);
 	}
 
 	protected URI buildUri(String path) {
@@ -50,22 +59,11 @@ public class AbstractFivepxOperations {
 	 * @return
 	 */
 	protected MultiValueMap<String, String> params(Object... keysAndValues)  {
-		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
-		if (keysAndValues == null || keysAndValues.length % 2 != 0) {
-			throw new IllegalArgumentException(
-					"The parameters must come in pairs (key/value), hence the length cannot be an odd number.");
-		}
-		for (int i = 0; i < keysAndValues.length; i = i + 2) {
-			Object value = keysAndValues[i + 1];
-			if (value != null) {
-				parameters.add(keysAndValues[i].toString(), value.toString());
-			}
-		}
-		return parameters;
+		return ApiUriUtils.params(keysAndValues);
 	}
 
 	protected Map<String, String> urlVariables(Object... keysAndValues) {
-		return this.params(keysAndValues).toSingleValueMap();
+		return ApiUriUtils.urlVariables(keysAndValues);
 	}
 
 	protected String getEndpointPath() {

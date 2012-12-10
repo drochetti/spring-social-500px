@@ -2,6 +2,8 @@ package org.springframework.social.fivepx.api;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -17,12 +19,13 @@ public class PhotoSearchResult {
 		TAKEN_AT;
 	}
 
-	private Stream stream;
-
+	@JsonProperty("current_page")
 	private Integer currentPage;
 
+	@JsonProperty("total_pages")
 	private Integer totalPages;
 
+	@JsonProperty("total_items")
 	private Long totalItems;
 
 	private List<Photo> photos;

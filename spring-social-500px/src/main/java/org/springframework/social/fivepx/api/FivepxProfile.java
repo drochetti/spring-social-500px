@@ -5,45 +5,61 @@ import java.util.Date;
 
 import lombok.Data;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.springframework.social.fivepx.api.json.Converters.ProfileGenderDeserializer;
+import org.springframework.social.fivepx.api.json.Converters.ProfileStatusDeserializer;
+
 @Data
 public class FivepxProfile implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Long id;
+	// Short
 
-	private final String userName;
+	private Long id;
 
-	private final String name;
+	private String username;
 
-	private final String userpicUrl;
+	private String firstname;
 
-	private String about;
+	private String lastname;
 
-	private String domain;
+	private String fullname;
 
 	private String city;
 
 	private String country;
 
-	private String sex;
+	@JsonProperty("upgrade_status")
+	@JsonDeserialize(using = ProfileStatusDeserializer.class)
+	private ProfileStatus upgradeStatus;
 
-	private int followersCount;
+	// Full
 
-	private int inFavouritesCount;
+	@JsonProperty("userpic_url")
+	private String userpicUrl;
 
-	private int friendsCount;
+	private String about;
 
-	private int affection;
+	private String domain;
 
+	@JsonProperty("sex")
+	@JsonDeserialize(using = ProfileGenderDeserializer.class)
+	private ProfileGender gender;
+
+	@JsonProperty("followers_count")
+	private Integer followersCount;
+
+	@JsonProperty("in_favourites_count")
+	private Integer inFavouritesCount;
+
+	@JsonProperty("friends_count")
+	private Integer friendsCount;
+
+	private Integer affection;
+
+	@JsonProperty("registration_date")
 	private Date registrationDate;
-
-	public FivepxProfile(Long id, String userName, String name,	String userpicUrl) {
-		super();
-		this.id = id;
-		this.userName = userName;
-		this.name = name;
-		this.userpicUrl = userpicUrl;
-	}
 
 }

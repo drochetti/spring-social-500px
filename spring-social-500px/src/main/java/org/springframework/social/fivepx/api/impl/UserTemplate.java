@@ -18,7 +18,7 @@ public class UserTemplate extends AbstractFivepxOperations implements UserOperat
 	@Override
 	public String getScreenName() {
 		requireAuthorization();
-		return getUserProfile().getName();
+		return getUserProfile().getFirstname();
 	}
 
 	@Override

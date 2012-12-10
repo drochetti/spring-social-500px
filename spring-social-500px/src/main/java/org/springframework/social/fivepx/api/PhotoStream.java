@@ -10,4 +10,9 @@ public enum PhotoStream implements Stream {
 	UPCOMING,
 	USER;
 
+	@Override
+	public String getParamValue() {
+		return name().toLowerCase();
+	}
+
 }

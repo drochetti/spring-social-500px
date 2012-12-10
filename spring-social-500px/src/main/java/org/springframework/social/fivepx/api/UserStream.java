@@ -6,4 +6,9 @@ public enum UserStream implements Stream {
 	USER_FRIENDS,
 	USER_FAVORITES;
 
+	@Override
+	public String getParamValue() {
+		return name().toLowerCase();
+	}
+
 }

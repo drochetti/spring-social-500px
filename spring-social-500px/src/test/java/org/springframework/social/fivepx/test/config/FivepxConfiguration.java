@@ -11,7 +11,7 @@ public class FivepxConfiguration {
 	private String consumerKey = "EsGxJ9QjIyaps3Y8eHErf90H2CU4l7mhZrMuEzto";
 
 	@Bean
-	public Fivepx createApi() {
+	public Fivepx createUnauthenticatedApi() {
 		return new FivepxTemplate(consumerKey);
 	}
 

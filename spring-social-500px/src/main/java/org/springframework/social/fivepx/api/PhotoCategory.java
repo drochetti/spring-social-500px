@@ -40,6 +40,6 @@ public enum PhotoCategory {
 	private final Integer id;
 
 	@Getter
-	private final String name;
+	private final String label;
 
 }

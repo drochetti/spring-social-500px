@@ -1,5 +1,6 @@
 package org.springframework.social.fivepx.api;
 
+
 /**
  * {@link Photo} endpoint operations.
  * See <a href="https://github.com/500px/api-documentation/tree/master/endpoints/photo">official docs</a>. 
@@ -16,27 +17,33 @@ public interface PhotoOperations {
 	 */
 	Photo getPhoto(Long photoId);
 
-	Photo getPhoto(Long photoId, PhotoImageSize imageSize);
+	/**
+	 * 
+	 * @param photoId
+	 * @param filter
+	 * @return
+	 */
+	PhotoResult getPhoto(Long photoId, PhotoFilter filter);
 
-	PhotoResult getPhoto(Long photoId, Boolean comments, Integer commentsPage,
-			Boolean tags, PhotoImageSize imageSize);
-
+	/**
+	 * @see #getPhotos(PhotoStreamFilter)
+	 * @return
+	 */
 	PhotoStreamResult getPhotos();
 
-	PhotoStreamResult getPhotos(PhotoStream stream);
+	/**
+	 * 
+	 * @param filter
+	 * @return
+	 */
+	PhotoStreamResult getPhotos(PhotoStreamFilter filter);
 
-	PhotoStreamResult getPhotos(UserStream stream, Long userId, String username);
-
-	PhotoStreamResult getPhotos(PhotoStream stream, PhotoSearchResult.Sort sort, Integer page, Integer resultsToReturn,
-			Boolean includeStore, Boolean includeState, Boolean tags, PhotoImageSize... imageSizes);
-	
-	PhotoStreamResult getPhotos(UserStream stream, Long userId, String username, PhotoSearchResult.Sort sort,
-			Integer page, Integer resultsToReturn, Boolean includeStore, Boolean includeState,
-			Boolean tags, PhotoImageSize... imageSizes);
-
-	PhotoSearchResult searchByKeywords(String term);
-
-	PhotoSearchResult searchByTag(String tag);
+	/**
+	 * 
+	 * @param filter
+	 * @return
+	 */
+	PhotoSearchResult search(PhotoSearchFilter filter);
 
 	OperationResult addToFavorites(Long photoId);
 

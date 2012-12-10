@@ -14,8 +14,8 @@ public class FivepxAdapter implements ApiAdapter<Fivepx> {
 	public UserProfile fetchUserProfile(Fivepx fivepx) {
 		FivepxProfile profile = fivepx.userOperations().getUserProfile();
 		return new UserProfileBuilder()
-				.setName(profile.getName())
-				.setUsername(profile.getUserName())
+				.setName(profile.getFullname())
+				.setUsername(profile.getUsername())
 				.build();
 	}
 
@@ -23,7 +23,7 @@ public class FivepxAdapter implements ApiAdapter<Fivepx> {
 	public void setConnectionValues(Fivepx fivepx, ConnectionValues values) {
 		FivepxProfile profile = fivepx.userOperations().getUserProfile();
 		values.setProviderUserId(Long.toString(profile.getId()));
-		values.setDisplayName(profile.getName());
+		values.setDisplayName(profile.getFullname());
 		values.setProfileUrl(profile.getDomain());
 		values.setImageUrl(profile.getUserpicUrl());
 	}
