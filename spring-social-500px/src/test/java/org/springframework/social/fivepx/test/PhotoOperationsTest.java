@@ -39,9 +39,16 @@ public class PhotoOperationsTest extends FivepxBaseTest {
 		assertNotNull(photo);
 		assertEquals(TEST_PHOTO_ID, photo.getId());
 	}
+
+	@Test
+	public void testGetPhotos() {
+		PhotoStreamResult result = photoOperations.getPhotos();
+		assertNotNull(result);
+		assertEquals(result.getStream(), PhotoStream.FRESH_TODAY);
+	}
 	
 	@Test
-	public void testGetPhotoPopularBlackAndWhiteStream() {
+	public void testGetPhotosPopularBlackAndWhiteStream() {
 		final PhotoStream stream = PhotoStream.POPULAR;
 		final PhotoCategory bnw = PhotoCategory.BLACK_AND_WHITE;
 
@@ -52,6 +59,16 @@ public class PhotoOperationsTest extends FivepxBaseTest {
 		assertTrue(bnw.equals(result.getFilters().getCategory()));
 		List<Photo> photos = result.getPhotos();
 		assertTrue(photos.size() <= DEFAULT_RPP);
+	}
+
+	@Test
+	public void testGetPhotosExcludingNude() {
+		final PhotoCategory nude = PhotoCategory.NUDE;
+		PhotoStreamResult result = photoOperations.getPhotos(
+				PhotoStreamFilter.by(PhotoStream.FRESH_TODAY).withExclude(nude));
+		assertNotNull(result);
+		assertNotNull(result.getFilters());
+		assertEquals(nude, result.getFilters().getExclude());
 	}
 
 	@Test
