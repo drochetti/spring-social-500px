@@ -5,8 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class PhotoOperationsTest extends FivepxBaseTest {
 		final PhotoCategory bnw = PhotoCategory.BLACK_AND_WHITE;
 
 		PhotoStreamResult result = photoOperations.getPhotos(
-				PhotoStreamFilter.by(stream).withOnly(bnw).withExclude(PhotoCategory.NUDE));
+				PhotoStreamFilter.by(stream).withOnly(bnw));
 		assertNotNull(result);
 		assertTrue(stream.equals(result.getStream()));
 		assertTrue(bnw.equals(result.getFilters().getCategory()));
@@ -65,17 +64,23 @@ public class PhotoOperationsTest extends FivepxBaseTest {
 	
 	@Test
 	public void testSearchByTag() {
-		final String tag = "sunset";
+		final String searchTag = "sunset";
 		final Integer rrp = 10;
 
-		PhotoSearchResult result = photoOperations.search(PhotoSearchFilter.byTag(tag).withResultsPerPage(rrp));
+		PhotoSearchResult result = photoOperations.search(
+				PhotoSearchFilter.byTag(searchTag).withResultsPerPage(rrp));
 		assertNotNull(result);
 		List<Photo> photos = result.getPhotos();
 		assertTrue(photos.size() <= rrp);
 		for (Photo photo : photos) {
-			Set<String> tags = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-			tags.addAll(photo.getTags());
-			assertTrue(tags.contains(tag));
+			boolean found = false;
+			for (String tag : photo.getTags()) {
+				found = tag.toLowerCase(Locale.ENGLISH).contains(searchTag);
+				if (found) {
+					break;
+				}
+			}
+			assertTrue(found);
 		}
 	}
 
