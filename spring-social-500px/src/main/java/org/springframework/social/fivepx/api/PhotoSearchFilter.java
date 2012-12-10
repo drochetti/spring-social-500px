@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Wither;
 
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class PhotoSearchFilter {
-	
-	@Wither @Getter
+
+	@Getter
 	private final String term;
-	
-	@Wither @Getter
+
+	@Getter
 	private final String tag;
-	
+
 	@Wither @Getter
 	private final Integer page;
 
@@ -30,10 +31,12 @@ public class PhotoSearchFilter {
 	private final PhotoImageSize imageSize;
 
 	public static PhotoSearchFilter byTag(String tag) {
+		Assert.hasText(tag);
 		return new PhotoSearchFilter(null, tag, null, null, true, null);
 	}
 
 	public static PhotoSearchFilter byKeywords(String term) {
+		Assert.hasText(term);
 		return new PhotoSearchFilter(term, null, null, null, null, null);
 	}
 
@@ -44,7 +47,7 @@ public class PhotoSearchFilter {
 				"page", page,
 				"rpp", resultsPerPage,
 				"tags", tags,
-				"image_size", imageSize != null ? imageSize.getId().toString() : null);
+				"image_size", imageSize != null ? imageSize.getId() : null);
 	}
 
 }

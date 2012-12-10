@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.social</groupId>
 	<artifactId>spring-social-500px</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0.M1</version>
 	<name>Spring Social 500px</name>
 	<description>Spring Social extension with connection support and an API binding for 500px</description>
 
